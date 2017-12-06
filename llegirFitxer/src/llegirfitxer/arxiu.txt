@@ -1,0 +1,3 @@
+enric;3000
+xoxi;200
+noelia;1000
