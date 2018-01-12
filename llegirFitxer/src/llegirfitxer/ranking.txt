@@ -1,0 +1,6 @@
+		PUNTUACIÓNS		
+	Nom: enric	Puntuacio: 1234
+	Nom: roger	Puntuacio: 234
+	Nom: diego	Puntuacio: 4124
+	Nom: joan	Puntuacio: 412412
+	Nom: test	Puntuacio: 65432

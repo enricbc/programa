@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package llegirfitxer;
+package llegirfixers1;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +26,8 @@ public class biblioteca {
         PrintWriter pw=null;
         BufferedReader br=null;
         String [] [] linies= new String [4][2];
-        ArrayList<String[]> array=new ArrayList<String[]>();
+        punts punts;
+        ArrayList<punts> array=new ArrayList<punts>();
         Scanner sc=new Scanner (System.in);
         public void introduirPuntuacio(){
             String nom=sc.nextLine();
@@ -34,11 +35,11 @@ public class biblioteca {
             String [] x = new String [2];
             x[0]=nom;
             x[1]=num;
-            array.add(x);
+            array.add(new punts (x[0],Integer.parseInt(x[1])));
         }
         public void llegirPuntuacio(){
             try {
-               arxiu=new File("src/llegirfitxer/arxiu.txt"); 
+               arxiu=new File("src/llegirfixers1/arxiu.txt"); 
                /* Obrim el fitxer iniciem el buffer reader*/
                fr = new FileReader(arxiu);
                br = new BufferedReader(fr);
@@ -46,8 +47,9 @@ public class biblioteca {
                String linia;
                int i=0;
                while((linia=br.readLine())!=null){
-                   array.add(linia.split(";"));                 
-                   System.out.println("Nom: "+array.get(array.size()-1)[0]+" Puntuació: "+array.get(array.size()-1)[1]);
+                   String x []=linia.split(";");
+                   array.add(new punts (x[0],Integer.parseInt(x[1])));                 
+                   System.out.println("Nom: "+array.get(i).nom+" Puntuació: "+array.get(i).punt);
                    i++;
                }
                br.close();
@@ -55,25 +57,16 @@ public class biblioteca {
                 System.out.println(b);
             }
         }
-        void ordenarArray(){
-            Collections.sort(array,new Comparator<String[]>() {
-            public int compare(String[] strings, String[] otherStrings) {
-                return strings[1].compareTo(otherStrings[1]);
+        void ordenarArray(){            
+            Collections.sort(array,new Comparator<punts>() {
+            public int compare(punts p1, punts p2) {
+                return p1.getPunt()-p2.getPunt();
             }
             });
             int i =0;
-            for (String[] sa : array) {
-                System.out.println(Arrays.toString(sa));
-            }
-        }
-        void compararPuntuacio(String nom,int x){
-            for (int i = 0; i < linies.length; i++) {
-                int b=Integer.parseInt(linies[i][1]);
-                System.out.println(b);
-                if (x>b) {
-                    linies[i][1]=Integer.toString(x);
-                    linies[i][0]=nom;
-                }
+            for (punts sa : array) {
+                System.out.println("Nom: "+array.get(i).nom+" Puntuació: "+array.get(i).punt);
+                i++;
             }
         }
         void maxPuntuació(){
@@ -85,12 +78,13 @@ public class biblioteca {
         }
         public void escriurePuntuacio(){
             try {
-                fw=new FileWriter("C:\\Users\\empis\\Documents\\programa\\llegirFitxer\\src\\llegirfitxer\\ranking.txt"); 
+                arxiu=new File("src/llegirfixers1/ranking.txt"); 
+                fw=new FileWriter(arxiu); 
                 pw= new PrintWriter(fw);
                 pw.println("\t\tPUNTUACIÓNS\t\t");
                 for (int i = 0; i < array.size(); i++) {
-                    System.out.println(String.valueOf(array.get(i)[0]));
-                    pw.println("\tNom: "+String.valueOf(array.get(i)[0])+"\tPuntuacio: "+String.valueOf(array.get(i)[1]));
+                    System.out.println(array.get(i).nom);
+                    pw.println("\tNom: "+array.get(i).nom+"\tPuntuacio: "+array.get(i).punt);
                 }
                 //pw.println(nom+";"+puntuacio);
                 pw.close();
@@ -102,7 +96,14 @@ public class biblioteca {
             
         }
 }
-class punts{
-    String [] noms = new String [100];
-    int [] punts = new int [100];
+class punts {
+    String nom;
+    int punt;
+    public punts (String nom, int punts){
+        this.nom=nom;
+        this.punt=punts;
+    }
+    int getPunt (){
+        return this.punt;
+    }
 }

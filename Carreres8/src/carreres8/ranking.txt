@@ -1,0 +1,11 @@
+		PUNTUACIÓNS		
+	Nom: test12	Puntuacio: 200
+	Nom: roger	Puntuacio: 234
+	Nom: roger	Puntuacio: 234
+	Nom: roger	Puntuacio: 234
+	Nom: Enric2	Puntuacio: 400
+	Nom: Enric2	Puntuacio: 400
+	Nom: Enric	Puntuacio: 1200
+	Nom: Enric	Puntuacio: 1200
+	Nom: Enric	Puntuacio: 1200
+	Nom: enric	Puntuacio: 1234

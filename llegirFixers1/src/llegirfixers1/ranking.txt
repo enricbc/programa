@@ -1,0 +1,6 @@
+		PUNTUACIÓNS		
+	Nom: josefran	Puntuacio: 9
+	Nom: roger	Puntuacio: 234
+	Nom: enric	Puntuacio: 1234
+	Nom: diego	Puntuacio: 4124
+	Nom: joan	Puntuacio: 412412

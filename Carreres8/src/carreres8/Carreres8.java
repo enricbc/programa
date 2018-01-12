@@ -8,6 +8,9 @@ package carreres8;
 import java.util.ArrayList;
 import processing.core.*;
 import java.io.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Scanner;
 /**
  *
@@ -42,34 +45,42 @@ public class Carreres8 extends PApplet {
     ArrayList<poste> posteEsquerra;
     ArrayList<poste> liniam;
     ArrayList<charco> charcos;
+    ArrayList<coche> array=new ArrayList<coche>();
     int gamemode=0;
     
+    boolean je=false;
+    biblioteca bib=new biblioteca();
     public void settings(){
         size(800,750);
+        
         posteDreta=new ArrayList();
         posteEsquerra=new ArrayList();
         charcos=new ArrayList();
         liniam=new ArrayList();    
-        marcador=loadImage("C:\\Users\\empis\\Desktop\\Joc m03\\marcador.png");
-        charco1=loadImage("C:\\Users\\empis\\Desktop\\Joc m03\\charco\\charco.png");
-        coche1=loadImage("C:\\Users\\empis\\Desktop\\Joc m03\\Coches\\coche2.png");
-        cochee=loadImage("C:\\Users\\empis\\Desktop\\Joc m03\\Coches\\cochee.png");
-        coched=loadImage("C:\\Users\\empis\\Desktop\\Joc m03\\Coches\\coched.png");
-        cel=loadImage("C:\\Users\\empis\\Documents\\programa\\carreres2\\cel.png");
-        carrega=loadImage("C:\\Users\\empis\\Documents\\programa\\jocarray\\captura1.png");
+        marcador=loadImage("images/marcador.png");
+        charco1=loadImage("images/charco/charco.png");
+        coche1=loadImage("images/Coches/coche2.png");
+        cochee=loadImage("images/Coches/cochee.png");
+        coched=loadImage("images/Coches/coched.png");
+        cel=loadImage("images/cel.png");
+        carrega=loadImage("images/captura1.png");
         coche=new coche();//Aqui inicialitzo
         coche.crearCoche();//Aqui creo un coche
     }
     public void draw(){
         if (gamemode==0) {
             pantallaCarrega();
+            je=false;
         }if (gamemode==1&&comprovarColisio()==false){
             background(127);
             
             image(cel,0,0);
-        if (coche.puntuacio>1000) {
+        if (coche.puntuacio>1000) {//DIFICULTAT 2
             charco.aumentarAceleracio();
-        }           
+        }  
+        if (coche.puntuacio>3000) {//DIFICULTAT 3
+            charco.aumentarAceleracio();
+        }
             crearCarretera();
             moveAll();
             clearAll();
@@ -80,12 +91,21 @@ public class Carreres8 extends PApplet {
             background(255);
             textSize(200);
             text("PAUSE",0,375);
-        }if (gamemode==3) {
-            
+        }if (gamemode==3&&je==false) {
+            background(127);
+            puntuacio();
+            bib.llegirPuntuacio();
+            bib.introduirPuntuacio();
+            bib.ordenarArray();
+            bib.escriureHistorial();
+            bib.escriureRanking();
+            clear();
+            je=true;
         }
+        System.out.println(gamemode);
     }
     public void pantallaCarrega(){
-        image(carrega,0,0);
+        image(carrega,0,0,800,750);
     }
     public void crearCarretera(){
         pdreta=new poste();
@@ -161,6 +181,28 @@ public class Carreres8 extends PApplet {
             }
         }
     }
+        public void clear(){ //Funcio per a borrar tots els objecte s'utilitza per a reiniciar el joc
+        for(int i =0;i < posteDreta.size(); i++){
+                posteDreta.remove(i);           
+        }
+        for(int i =0;i < posteEsquerra.size(); i++){
+                posteEsquerra.remove(i);
+        }
+        for(int i =0;i < liniam.size(); i++){
+                liniam.remove(i);
+        }
+        Iterator it = charcos.iterator(); //ITERATOR
+        int x=0;
+        while (it.hasNext()){
+            charcos.remove(x);
+            x++;
+        }
+        for (int i = 0; i < array.size(); i++) {
+                array.remove(i);
+        }
+        coche=new coche();
+        coche.crearCoche();
+    }
     public void puntuacio(){
         for(int i =0;i < charcos.size(); i++){
             if (charcos.get(i).y>coche.y) {
@@ -209,8 +251,12 @@ public class Carreres8 extends PApplet {
             }if (keyCode==UP) {
                 if (gamemode==3) {
                 gamemode=0;
-            }else{
-                gamemode++;
+                }else if(gamemode==0){
+                    gamemode++;
+                }else if(gamemode==1){
+                    gamemode++;
+                }else if(gamemode==2){
+                    gamemode=1;
                 }
             }
         }
@@ -227,20 +273,20 @@ public class Carreres8 extends PApplet {
         for(poste pdreta : posteDreta){
             if(pdreta.x<(coche.x+58)&&pdreta.y>coche.y){
                 x=true;
-                gamemode =2;
+                gamemode =3;
             }
         }
         for(poste pesquerra : posteEsquerra){
             if(pesquerra.x>(coche.x)&&pesquerra.y>coche.y){
                 x=true;
-                gamemode=2;
+                gamemode=3;
             }
         }
         for(charco charco : charcos){
             if(coche.x>=charco.x&&coche.x<=charco.x+charco.width||coche.x+80>=charco.x&&coche.x+80<=charco.x){
                 if (charco.y+charco.height>=coche.y) {
                     x=true;
-                   gamemode=2;
+                   gamemode=3;
                 }
             }
         }
@@ -292,11 +338,19 @@ public class Carreres8 extends PApplet {
     public class coche{
         int x;
         int y;
+        String nom;
         int puntuacio;
         PImage buid;
         public coche(){
             buid=coche1;
         }
+        public coche (String nom, int punts){
+        this.nom=nom;
+        this.puntuacio=punts;
+    }
+    int getPunt (){
+        return this.puntuacio;
+    }
         void crearCoche(){
             y=550;
             x=370;
@@ -358,31 +412,101 @@ public class Carreres8 extends PApplet {
     public class biblioteca{
         File arxiu=null;
         FileReader fr=null;
+        FileWriter fw=null;
+        PrintWriter pw=null;
         BufferedReader br=null;
-        String[][] puntuacions = new String [2][1];
         
+        Scanner sc=new Scanner (System.in);
+       
+        void introduirPuntuacio(){
+            String nom =sc.nextLine();
+            
+            array.add(new coche (nom,coche.getPunt()));
+        }
         void llegirPuntuacio(){
             try {
-               arxiu=new File(""); 
-               /* Obrim el fitxer iniciem el buffer reader*/
+                /*Obrim el fitxer*/ 
+               arxiu= new File("src/carreres8/historial.txt");
+               /* Iniciem el buffer reader*/
                fr = new FileReader(arxiu);
                br = new BufferedReader(fr);
                //Llegim el fitxer
                String linia;
+               int i=0;
                while((linia=br.readLine())!=null){
-                   int j=0;
-                    for (int i =0; i<2; i++) {
-                        String [] puntuacio=linia.split(".");
-                       puntuacions[j]=linia.split(".");
-                    }
-                    j++;
+                   String x []=linia.split(";");
+                   array.add(new coche (x[0],Integer.parseInt(x[1])));                 
+                   System.out.println("Nom: "+array.get(i).nom+" Puntuació: "+array.get(i).puntuacio);
+                   i++;
                }
             }catch (Exception b){
-                
+                System.out.println(b);
+            }finally{
+                //Al finally tanquem el fitxer per assegurar-nos que es tanca
+                try{
+                    if (null!=fr) {
+                        fr.close();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }               
             }
         }
-        void compararPuntuacio(int x){
-            
+        public void escriureHistorial(){
+            try {
+                arxiu=new File ("src/carreres8/historial.txt");
+                fw=new FileWriter(arxiu); 
+                pw= new PrintWriter(fw);
+                for (int i = 0; i < 100 ; i++) {
+                    System.out.println("Nom: "+array.get(i).nom+" Puntuació: "+array.get(i).puntuacio);
+                    pw.println(array.get(i).nom+";"+array.get(i).puntuacio);
+                }
+            }catch (Exception c){
+                
+            }finally{
+                //Al finally tanquem el fitxer per assegurar-nos que es tanca
+                try{
+                    if (null!=pw) {
+                        pw.close();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }               
+            }
+        }
+        public void escriureRanking(){
+            try {
+                arxiu=new File ("src/carreres8/ranking.txt");
+                fw=new FileWriter(arxiu); 
+                pw= new PrintWriter(fw);
+                pw.println("\t\tPUNTUACIÓNS\t\t");
+                for (int i = 0; i < 10 ; i++) {
+                    pw.println("\tNom: "+array.get(i).nom+"\tPuntuacio: "+array.get(i).puntuacio);
+                }
+            }catch (Exception c){
+                
+            }finally{
+                //Al finally tanquem el fitxer per assegurar-nos que es tanca
+                try{
+                    if (null!=pw) {
+                        pw.close();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }               
+            }
+        }
+        void ordenarArray(){
+            Collections.sort(array,new Comparator<coche>() {
+            public int compare(coche p1, coche p2) {
+                return p1.getPunt()-p2.getPunt();
+            }
+            });
+            int i =0;
+            for (coche sa : array) {
+                System.out.println("Nom: "+array.get(i).nom+" Puntuació: "+array.get(i).puntuacio);
+                i++;
+            }
         }
         void maxPuntuació(){
             try {
@@ -393,3 +517,4 @@ public class Carreres8 extends PApplet {
         }
     }
 }
+ 

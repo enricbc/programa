@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package llegirfitxer;
+package llegirfixers1;
 
 /**
  *
  * @author empis
  */
-public class LlegirFitxer {
+public class LlegirFixers1 {
 
     /**
      * @param args the command line arguments
