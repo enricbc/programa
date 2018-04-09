@@ -1,0 +1,10 @@
+		PUNTUACIÓNS		
+	Nom: JUAN	Puntuacio: 2400
+	Nom: XOXI	Puntuacio: 2100
+	Nom: FILI	Puntuacio: 1900
+	Nom: ENRI	Puntuacio: 1400
+	Nom: PUTA	Puntuacio: 1400
+	Nom: ZZZZ	Puntuacio: 1200
+	Nom: JOSE	Puntuacio: 1200
+	Nom: PRIN	Puntuacio: 1200
+	Nom: PEPI	Puntuacio: 1000

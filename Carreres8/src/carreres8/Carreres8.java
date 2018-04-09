@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Scanner;
+import static processing.core.PConstants.BACKSPACE;
+import static processing.core.PConstants.CODED;
+import static processing.core.PConstants.ENTER;
 /**
  *
  * @author empis
@@ -26,6 +29,7 @@ public class Carreres8 extends PApplet {
         Carreres8 pt = new Carreres8 ();
         PApplet.runSketch(new String[]{"Carreres8"}, pt);
     }
+    PFont font;
     /*ATRIBUTS GLOBALS*/
     /*objectes*/
     poste pdreta;//=new poste();
@@ -34,6 +38,8 @@ public class Carreres8 extends PApplet {
     coche coche;
     charco charco;
     /*imatges*/
+    PImage ranking1;
+    PImage ranking;
     PImage cel;
     PImage carrega;
     PImage coche1;
@@ -41,22 +47,27 @@ public class Carreres8 extends PApplet {
     PImage coched;
     PImage charco1;
     PImage marcador;
+    PImage entrada;
     ArrayList<poste> posteDreta;
     ArrayList<poste> posteEsquerra;
     ArrayList<poste> liniam;
     ArrayList<charco> charcos;
     ArrayList<coche> array=new ArrayList<coche>();
     int gamemode=0;
-    
+    int ran=0;
     boolean je=false;
     biblioteca bib=new biblioteca();
     public void settings(){
         size(800,750);
         
+        
         posteDreta=new ArrayList();
         posteEsquerra=new ArrayList();
         charcos=new ArrayList();
-        liniam=new ArrayList();    
+        liniam=new ArrayList();  
+        entrada=loadImage("images/entrada.png");
+        ranking=loadImage("images/franking1.png");
+        ranking1=loadImage("images/franking.png");
         marcador=loadImage("images/marcador.png");
         charco1=loadImage("images/charco/charco.png");
         coche1=loadImage("images/Coches/coche2.png");
@@ -69,6 +80,8 @@ public class Carreres8 extends PApplet {
     }
     public void draw(){
         if (gamemode==0) {
+            font=createFont("font/neoletters.ttf", 20);
+            textFont(font); 
             pantallaCarrega();
             je=false;
         }if (gamemode==1&&comprovarColisio()==false){
@@ -91,18 +104,25 @@ public class Carreres8 extends PApplet {
             background(255);
             textSize(200);
             text("PAUSE",0,375);
-        }if (gamemode==3&&je==false) {
-            background(127);
-            puntuacio();
+        }if (gamemode==3) {
+            
+            background(entrada);
+            text("NOM:\n",375,250);
+            text(coche.nom,375,310);
+            
+
+            
+        }if (gamemode==4&&je==false) {
+            background(ranking1);
             bib.llegirPuntuacio();
-            bib.introduirPuntuacio();
             bib.ordenarArray();
+            bib.imprimirRanking();
             bib.escriureHistorial();
             bib.escriureRanking();
             clear();
             je=true;
         }
-        System.out.println(gamemode);
+
     }
     public void pantallaCarrega(){
         image(carrega,0,0,800,750);
@@ -198,8 +218,10 @@ public class Carreres8 extends PApplet {
             x++;
         }
         for (int i = 0; i < array.size(); i++) {
-                array.remove(i);
+                array.removeAll(array);
+                
         }
+        coche=null;
         coche=new coche();
         coche.crearCoche();
     }
@@ -250,16 +272,31 @@ public class Carreres8 extends PApplet {
                 //coche.displayd();
             }if (keyCode==UP) {
                 if (gamemode==3) {
-                gamemode=0;
+                    
+                    gamemode++;
                 }else if(gamemode==0){
                     gamemode++;
                 }else if(gamemode==1){
                     gamemode++;
                 }else if(gamemode==2){
                     gamemode=1;
+                }else if(gamemode==4){
+                    gamemode=0;
                 }
             }
         }
+                                if (gamemode==3) {
+                    if (key == ENTER && coche.nom.length() == 4){
+                        array.add(new coche (coche.nom,coche.getPunt()));
+                        gamemode=4;
+                    }else if(key == BACKSPACE && coche.nom.length()>0){
+                        coche.nom = coche.nom.substring(0, coche.nom.length()-1);
+                    }
+                    else if (key != CODED && key!=BACKSPACE && coche.nom.length()<4) {
+                        coche.nom += key;
+                        coche.nom = coche.nom.toUpperCase();
+                    }
+                }
     }
     public void keyReleased(){
         if (key==CODED) {
@@ -343,6 +380,7 @@ public class Carreres8 extends PApplet {
         PImage buid;
         public coche(){
             buid=coche1;
+            this.nom="NAME";
         }
         public coche (String nom, int punts){
         this.nom=nom;
@@ -415,14 +453,7 @@ public class Carreres8 extends PApplet {
         FileWriter fw=null;
         PrintWriter pw=null;
         BufferedReader br=null;
-        
-        Scanner sc=new Scanner (System.in);
        
-        void introduirPuntuacio(){
-            String nom =sc.nextLine();
-            
-            array.add(new coche (nom,coche.getPunt()));
-        }
         void llegirPuntuacio(){
             try {
                 /*Obrim el fitxer*/ 
@@ -480,7 +511,7 @@ public class Carreres8 extends PApplet {
                 fw=new FileWriter(arxiu); 
                 pw= new PrintWriter(fw);
                 pw.println("\t\tPUNTUACIÓNS\t\t");
-                for (int i = 0; i < 10 ; i++) {
+                for (int i = array.size()-1; i >array.size()-10 ; i--) {
                     pw.println("\tNom: "+array.get(i).nom+"\tPuntuacio: "+array.get(i).puntuacio);
                 }
             }catch (Exception c){
@@ -508,11 +539,16 @@ public class Carreres8 extends PApplet {
                 i++;
             }
         }
-        void maxPuntuació(){
-            try {
-                
-            }catch (Exception b){
-                
+        void imprimirRanking(){
+            textSize(20);
+            int x=400; //Es laltura a la que anaem imprimim 
+            int y=1;
+            
+            font=createFont("font/neoletters.ttf", 20);
+            for (int i = array.size()-1; i > array.size()-6; --i) {//Sols imprimeixo els 5 millors
+                text(y+"  Nom: \t"+array.get(i).nom+"       Puntuació: "+array.get(i).puntuacio+"\n",200,x);
+                x=x+30;
+                y++;
             }
         }
     }
