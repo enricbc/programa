@@ -31,6 +31,14 @@ public class Alumne {
         this.codi_postal=codi_postal;
         this.poblacio=poblacio;
     }
+    public Alumne (String dni, int a){
+        if (a==0) {
+            this.dni=dni;
+        }else{
+            this.poblacio=dni;
+        }
+        
+    }
     
     public String toString(){
         return dni+";"+nom+";"+cognom1+";"+cognom2+";"+carrer_numero_pis_porta+";"+codi_postal+";"+poblacio;

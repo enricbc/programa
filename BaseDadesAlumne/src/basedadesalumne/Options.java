@@ -38,10 +38,10 @@ public class Options extends javax.swing.JFrame {
     private void initComponents() {
 
         consultar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        eliminar = new javax.swing.JButton();
         afegir = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        consulta1 = new javax.swing.JButton();
+        sortir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,10 +52,10 @@ public class Options extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Esborrar alumnes");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        eliminar.setText("Esborrar alumnes");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                eliminarActionPerformed(evt);
             }
         });
 
@@ -66,17 +66,17 @@ public class Options extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Consultar alumnes x pob");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        consulta1.setText("Consultar alumnes x pob");
+        consulta1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                consulta1ActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Sortir del programa");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        sortir.setText("Sortir del programa");
+        sortir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                sortirActionPerformed(evt);
             }
         });
 
@@ -87,10 +87,10 @@ public class Options extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(309, 309, 309)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sortir, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consulta1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(afegir, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(consultar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(334, Short.MAX_VALUE))
         );
@@ -102,20 +102,22 @@ public class Options extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(afegir, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(consulta1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sortir, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        Eliminar e = new Eliminar();
+        this.setVisible(false);
+        e.setVisible(true);
+    }//GEN-LAST:event_eliminarActionPerformed
 
     private void afegirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afegirActionPerformed
         
@@ -124,13 +126,18 @@ public class Options extends javax.swing.JFrame {
         a.setVisible(true);
     }//GEN-LAST:event_afegirActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void consulta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consulta1ActionPerformed
+        consultar1 a = new consultar1();
+        this.setVisible(false);
+        a.setVisible(true);
+    }//GEN-LAST:event_consulta1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void sortirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortirActionPerformed
+        Metodes m = new Metodes ();
+        m.tancarConexio();
+        this.setVisible(false);
+        System.exit(0);
+    }//GEN-LAST:event_sortirActionPerformed
 
     private void consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarActionPerformed
         consultar c = new consultar();
@@ -175,9 +182,9 @@ public class Options extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton afegir;
+    private javax.swing.JButton consulta1;
     private javax.swing.JButton consultar;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton eliminar;
+    private javax.swing.JButton sortir;
     // End of variables declaration//GEN-END:variables
 }

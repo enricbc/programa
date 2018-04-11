@@ -27,6 +27,14 @@ public class Metodes {
             System.out.print("error al tancar la conexio");
         }
     }
+    public void eliminar(String dni){
+        Alumne a = new Alumne(dni,0);
+        ObjectSet x=baseDeDades.get(a);
+        if (x.hasNext()) {
+            Alumne p = (Alumne) x.next(); 
+            baseDeDades.delete(p);
+        }       
+    }
     public static boolean login (String user, String pass){
         if (user.equals("Enric")&&pass.equals("123456")) {
             return true;
@@ -55,6 +63,48 @@ public class Metodes {
                 row.removeRow(row.getRowCount()-1);
         } 
         Alumne a = new Alumne();
+        
+        ObjectSet result = baseDeDades.get(a);
+        String[] dades= new String[baseDeDades.get(a).size()];//array per a guardar les columnes
+        
+        try{
+            
+            while(result.hasNext()){
+                        System.out.println("While");
+
+                for (int i=0;i<dades.length;i++){
+                    System.out.println("For "+i+" dades.length "+dades.length);
+                    dades[i]=result.next().toString();
+                    String [] prova=dades[i].split(";");
+                    row.addRow(prova);
+                }            
+            }
+        } catch (Exception ex) {
+             JOptionPane.showMessageDialog(null, "Error al realizar la conexión "+ex);
+        }
+        return row;
+    }
+    public DefaultTableModel consultarAlumnes1(String poble){
+        
+        DefaultTableModel row = new DefaultTableModel();//Model per a la taula dels alumnes
+        ArrayList alumnescap = new ArrayList();//ArrayList per a guardar les columnes
+        alumnescap.add("DNI");
+        alumnescap.add("Nom");
+        alumnescap.add("Cognom1");
+        alumnescap.add("Cognom2");
+        alumnescap.add("Adreça");
+        alumnescap.add("Codi postal");
+        alumnescap.add("Poblacio");
+        for(int i=0; i<alumnescap.size();i++){
+                row.addColumn(alumnescap.get(i));
+        }
+        int e = row.getRowCount()-1;//Agafa el numero de linies menos la primera
+
+        //Esborra totes les linies menos la primera
+        for (int i = e; i >= 0; i--) {           
+                row.removeRow(row.getRowCount()-1);
+        } 
+        Alumne a = new Alumne(poble,1);
         
         ObjectSet result = baseDeDades.get(a);
         String[] dades= new String[baseDeDades.get(a).size()];//array per a guardar les columnes
